@@ -73,7 +73,7 @@ export class UploadComponent implements OnInit {
 
   onSelect(event: any) {
     let file = event.target.files[0];
-    this.readBase64(file).then(data => {
+    this.convertToBase64(file).then(data => {
       debugger
       var mainPart = data.split(',')[1];
       var d1 = this.elementRef.nativeElement.querySelector('.filesDom');
@@ -81,7 +81,7 @@ export class UploadComponent implements OnInit {
     });
   }
 
-  private readBase64(file): Promise<any> {
+  private convertToBase64(file: any): Promise<any> {
     const reader = new FileReader();
     const future = new Promise((resolve, reject) => {
       reader.addEventListener('load', function () {
