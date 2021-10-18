@@ -15,7 +15,7 @@
                         <div class="form-group col-md-4">
                             <label for="address">certificate</label>
                             <input name="certificate" type="file" (change)="onSelect($event)" class="form-control">
-                            <input type="hidden" name="certificate" formControlName="certificate"/>
+                            <input type="hidden" name="certificate" formControlName="certificate" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -32,4 +32,7 @@
             <button type="submit" class="btn btn-primary btn-block">Save</button>
         </div>
     </form>
+    <ul class="filesDom" hidden>
+
+    </ul>
 </div>
