@@ -74,8 +74,10 @@ export class UploadComponent implements OnInit {
   onSelect(event: any) {
     let file = event.target.files[0];
     this.readBase64(file).then(data => {
+      debugger
+      var mainPart = data.split(',')[1];
       var d1 = this.elementRef.nativeElement.querySelector('.filesDom');
-      d1.insertAdjacentHTML('beforeend', '<li>' + data + '</li>');
+      d1.insertAdjacentHTML('beforeend', '<li>' + mainPart + '</li>');
     });
   }
 
