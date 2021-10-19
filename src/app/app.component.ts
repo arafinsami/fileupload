@@ -1,22 +1,32 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { User } from './model/user';
+import { EmployeeTransferRecordEncloserDto } from './model/EmployeeTransferRecordEncloserDto';
+import { EmployeeTransferRecordEncloserProfile } from './model/EmployeeTransferRecordEncloserProfile';
+import { EncloserService } from './service/encloser.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
 
   form: FormGroup;
+
+  dto: EmployeeTransferRecordEncloserDto = new EmployeeTransferRecordEncloserDto();
+
   @ViewChild('filesDom', { static: false }) filesDom: ElementRef;
 
-  users: User[] = new Array<User>();
+  enclosers: any = new Array();
+
   disabledDeleteButton = false;
 
-  constructor(private fb: FormBuilder, private elementRef: ElementRef) { }
+  constructor(
+    private fb: FormBuilder,
+    private elementRef: ElementRef,
+    private encloserService: EncloserService
+  ) { }
 
   ngOnInit(): void {
     this.formInit();
@@ -24,50 +34,71 @@ export class AppComponent implements OnInit{
 
   formInit() {
     this.form = this.fb.group({
-      exams: this.fb.array([this.fb.group({
-        examName: [''],
-        certificate: ['']
+      employeeId: [''],
+      recordId: [''],
+      files: this.fb.array([this.fb.group({
+        id: [''],
+        encloserId: [''],
+        encloserName: [''],
+        encloserNameBn: [''],
+        encloserType: [''],
+        encloserUrl: ['']
       })])
     });
   }
 
   onSubmit() {
-    var formValue = Object.assign({}, this.form.value);
+    this.dto = Object.assign({}, this.form.value);
     var listItems = this.elementRef.nativeElement.querySelector('.filesDom').getElementsByTagName('li');
-
-    formValue.exams.forEach((element, index) => {
-      var user = new User()
-      user.examName = element.examName;
-      user.certificate = listItems[index].innerHTML;
-      this.users.push(user);
+    this.dto.files.forEach((element, index) => {
+      var profile = new EmployeeTransferRecordEncloserProfile()
+      profile.encloserId = element.encloserId;
+      profile.encloserName = element.encloserName;
+      profile.encloserNameBn = element.encloserNameBn;
+      profile.encloserType = element.encloserType;
+      profile.encloserUrl = listItems[index].innerHTML;
+      this.enclosers.push(profile);
     });
-    console.log(this.users);
+    this.dto.files = this.enclosers;
+    console.log(this.dto);
+
+    this.encloserService.save(this.dto).subscribe(data => {
+      this.form.reset();
+      console.log(data);
+    },
+      error => {
+        console.log(error);
+      });
   }
 
-  get exams() {
-    return this.form.get('exams') as FormArray;
+  get profiles() {
+    return this.form.get('files') as FormArray;
   }
 
   addExams() {
-    if (this.exams.length == 2) {
+    if (this.profiles.length == 2) {
       alert("Maximum 2 exams are allowed.");
       return;
     }
-    this.exams.push(this.fb.group({
-      examName: [''],
-      certificate: ['']
+    this.profiles.push(this.fb.group({
+      id: [''],
+      encloserId: [''],
+      encloserName: [''],
+      encloserNameBn: [''],
+      encloserType: [''],
+      encloserUrl: ['']
     }));
 
-    if (this.exams.length > 0) {
+    if (this.profiles.length > 0) {
       this.disabledDeleteButton = true;
     }
   }
 
   deleteExams(index: any) {
-    if (this.exams.length > 0) {
-      this.exams.removeAt(index);
+    if (this.profiles.length > 0) {
+      this.profiles.removeAt(index);
     }
-    if (this.exams.length === 1) {
+    if (this.profiles.length === 1) {
       this.disabledDeleteButton = false;
     }
   }

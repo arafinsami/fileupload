@@ -14,22 +14,47 @@
 
   <div class="panel-body">
     <form focusInvalidInput [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group col-md-4">
+            <label for="address">employee id</label>
+            <input type="number" class="form-control" formControlName="employeeId"
+                placeholder="employeeId" />
+        </div>
+        <div class="form-group col-md-4">
+            <label for="address">recordId</label>
+            <input type="number" class="form-control" formControlName="recordId"
+                placeholder="recordId" />
+        </div>
         <div class="row" class="lot-type-part">
-            <div class="col-md-12" formArrayName="exams">
+            <div class="col-md-12" formArrayName="files">
                 <div class="form-row">
                     <button type="button" class="btn btn-primary" (click)="addExams()">Add More</button>
                 </div>
-                <div *ngFor="let lot of exams.controls; let examIndex=index" [formGroupName]="examIndex">
+                <div *ngFor="let lot of profiles.controls; let examIndex=index" [formGroupName]="examIndex">
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="address">Exam Name</label>
-                            <input type="text" class="form-control" formControlName="examName"
-                                placeholder="Exam Name" />
+                            <label for="address">encloserId</label>
+                            <input type="number" class="form-control" formControlName="encloserId"
+                                placeholder="encloserId" />
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="address">certificate</label>
-                            <input name="certificate" type="file" (change)="onSelect($event)" class="form-control">
-                            <input type="hidden" name="certificate" formControlName="certificate" />
+                            <label for="address">encloserName</label>
+                            <input type="text" class="form-control" formControlName="encloserName"
+                                placeholder="encloserName" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="address">encloserNameBn</label>
+                            <input type="text" class="form-control" formControlName="encloserNameBn"
+                                placeholder="encloserNameBn" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="address">encloserType</label>
+                            <input type="text" class="form-control" formControlName="encloserType"
+                                placeholder="encloserType" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="address">encloserUrl</label>
+                            <input name="encloserUrl" type="file" (change)="onSelect($event)" class="form-control">
+                            <input type="hidden" name="encloserUrl" formControlName="encloserUrl" />
                         </div>
                     </div>
                     <div class="form-row">
